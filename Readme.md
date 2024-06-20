@@ -1,10 +1,10 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Станислав](https://up.htmlacademy.ru/javascript/32/user/2409163).
-* Наставник: `Неизвестно`.
+* Наставник: `Вячеслав Николаев`.
 
 ---
-
+g
 _Не удаляйте и не изменяйте самовольно файлы и папки:_
 _`.editorconfig`, `.eslintrc`, `.gitattributes`, `.gitignore`, `package-lock.json`, `package.json`., `.github`_
 
