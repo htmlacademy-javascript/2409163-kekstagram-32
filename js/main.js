@@ -1,3 +1,4 @@
+const PHOTOS_NUMBER = 25;
 const MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -14,7 +15,7 @@ const DESCRIPTIONS = ['#отпуск', '#работа', '#спорт', 'На п�
 const generateArray = (minValue, maxValue) => {
   const newArray = [];
   for (let i = 0; i <= maxValue - minValue; i++) {
-    newArray[i] = i + minValue;
+    newArray.push(minValue + i);
   }
   return newArray;
 };
@@ -51,7 +52,6 @@ const getRandomArrayElement = (array) => {
 };
 
 //переменные для вызова функции с замыканием
-const generateRandomID = getRandomArrayElement(idArray);
 const generateRandomPhotoID = getRandomArrayElement(idArray);
 const generateDescription = getRandomArrayElement(DESCRIPTIONS);
 const generateLikesNum = getRandomArrayElement(likesArray);
@@ -87,10 +87,10 @@ const createComment = function() {
 
 };
 //генератор объекта фото
-const createNewPhoto = function() {
+const createNewPhoto = function(index) {
 
   return {
-    id: generateRandomID(),
+    id: index,
     url: `photos/${ generateRandomPhotoID() }.jpg`,
     description: generateDescription(),
     likes: generateLikesNum(),
@@ -98,6 +98,6 @@ const createNewPhoto = function() {
   };
 };
 
-const arrayPhotos = Array.from({length: 25}, createNewPhoto);
+const arrayPhotos = Array.from({length: PHOTOS_NUMBER}, (_, index) => createNewPhoto(index + 1));
 
 console.log(arrayPhotos);
