@@ -18,4 +18,4 @@ function isPalindrome (string) {
   return(stringFormatted === convertedString);
 }
 
-console.log(isPalindrome('Лёша на полке клопа нашёл '));
+// console.log(isPalindrome('Лёша на полке клопа нашёл '));
