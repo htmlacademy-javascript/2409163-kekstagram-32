@@ -67,6 +67,10 @@ const createNewPhoto = function(index) {
   };
 };
 
-const arrayPhotos = Array.from({length: PHOTOS_NUMBER}, (_, index) => createNewPhoto(index + 1));
+const getPhotos = () => Array.from(
+  {length: PHOTOS_NUMBER},
+  (_, index) => createNewPhoto(index + 1)
+);
 
-export {arrayPhotos};
+export {getPhotos};
+
