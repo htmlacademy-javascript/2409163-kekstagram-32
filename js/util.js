@@ -21,7 +21,7 @@ const getRandomArrayElement = (array) => {
   return function () {
     let currentElement = array[getRandomInteger(0, array.length - 1)];
     while (previousValues.includes(currentElement)) {
-      currentElement = getRandomInteger(0, array.length - 1);
+      currentElement = array[getRandomInteger(0, array.length - 1)];
     }
     if (array.length >= 25) {
       previousValues.push(currentElement);
