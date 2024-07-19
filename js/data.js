@@ -30,6 +30,7 @@ const generateAvatarsNum = getRandomArrayElement(avatarsArray);
 const generateMessageText = getRandomArrayElement(MESSAGES);
 const generateName = getRandomArrayElement(NAMES);
 
+
 //генератор текста комментария
 const getRandomCommentMessage = () => {
   const sentenceNumber = getRandomInteger(1, 2);
