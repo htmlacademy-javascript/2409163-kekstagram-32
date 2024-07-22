@@ -6,7 +6,6 @@ const body = document.querySelector('body');
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImage = bigPicture.querySelector('img');
 const bigPictureLikes = bigPicture.querySelector('.likes-count');
-const socialCommentCount = bigPicture.querySelector('.social__comment-count');
 const socialCommentLoader = bigPicture.querySelector('.social__comments-loader');
 const bigPictureShowCommentsNum = bigPicture.querySelector('.social__comment-shown-count');
 const bigPictureTotalCommentsNum = bigPicture.querySelector('.social__comment-total-count');
@@ -21,14 +20,13 @@ const onEscapeKeyClick = (evt) => {
   }
 };
 
-const renderComments = (items) => {
-  //1 Сопоставить блок с комментариями выбранной миниатюре, если урл bigpicture соответствует массиву миниатюр, подставить данные через innerHTML
-  //2 Сгенерировать количество элементво списса равное bigPictureShowCommentsNum.textContent
-  socialCommentsBlock.innerHTML = '';
+const renderFiveComments = (items) => {
+  const renderedComments = socialCommentsBlock.querySelectorAll('.social__comment').length;
+  const commentsToRender = (bigPictureTotalCommentsNum.textContent - renderedComments) < 5 ? bigPictureTotalCommentsNum.textContent - renderedComments : 5;
+
   items.forEach((item) => {
-    // console.log(item.id, bigPictureImage.id);
     if (item.id === parseInt(bigPictureImage.id, 10)) {
-      for (let i = 0; i <= bigPictureShowCommentsNum.textContent - 1; i++) {
+      for (let i = 0; i < commentsToRender; i++) {
         socialCommentsBlock.insertAdjacentHTML('afterbegin', `
           <li class="social__comment">
             <img
@@ -42,7 +40,14 @@ const renderComments = (items) => {
       }
     }
   });
+  bigPictureShowCommentsNum.textContent = socialCommentsBlock.querySelectorAll('.social__comment').length;
+  if (commentsToRender < 5) {
+    socialCommentLoader.classList.add('hidden');
+  }
+
 };
+
+const renderFiveCommentsFromData = () => renderFiveComments(photosData);
 
 const openBigPicture = (evt) => {
   if (evt.target.matches('.picture__img')) {
@@ -50,14 +55,19 @@ const openBigPicture = (evt) => {
     bigPictureImage.src = evt.target.src;
     bigPictureImage.id = evt.target.parentNode.id;
     bigPictureLikes.textContent = evt.target.parentNode.querySelector('.picture__likes').textContent;
-    bigPictureShowCommentsNum.textContent = 5;
+    bigPictureShowCommentsNum.textContent = evt.target.parentNode.querySelector('.picture__comments').textContent < 5 ? evt.target.parentNode.querySelector('.picture__comments').textContent : 5;
     bigPictureTotalCommentsNum.textContent = evt.target.parentNode.querySelector('.picture__comments').textContent;
     bigPictureDescription.textContent = evt.target.alt;
     body.classList.add('modal-open');
-    socialCommentCount.classList.add('hidden');
-    socialCommentLoader.classList.add('hidden');
+    socialCommentsBlock.innerHTML = '';
+
+    if (parseInt(bigPictureTotalCommentsNum.textContent, 10) <= 5) {
+      socialCommentLoader.classList.add('hidden');
+    }
+
     document.addEventListener('keydown', onEscapeKeyClick);
-    renderComments(photosData);
+    renderFiveCommentsFromData();
+    socialCommentLoader.addEventListener('click', renderFiveCommentsFromData);
   }
 };
 
@@ -67,6 +77,7 @@ const closeBigPicture = () => {
   body.classList.remove('modal-open');
   socialCommentsBlock.innerHTML = '';
 };
+
 
 picturesContainer.addEventListener('click', openBigPicture);
 BigPictureCloseButton.addEventListener('click', closeBigPicture);
