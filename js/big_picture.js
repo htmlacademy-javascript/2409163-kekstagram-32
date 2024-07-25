@@ -16,7 +16,6 @@ const socialCommentsBlock = bigPicture.querySelector('.social__comments');
 const COMMENTS_NUMBER_TO_RENDER = 5;
 let renderedComments = 0;
 
-
 const generateCommentElements = (item, amount) => {
   for (let i = 0; i < amount; i++) {
     socialCommentsBlock.insertAdjacentHTML('afterbegin', `
@@ -41,9 +40,6 @@ const generateCommentsFromData = (items) => {
 
       generateCommentElements(item, commentsToRender);
       renderedComments += commentsToRender;
-      console.log(`Всего комментов: ${item.comments.length}`);
-      console.log(`Отрисовано комментов: ${renderedComments}`);
-      console.log(`Нужно отрисовать: ${commentsToRender}`);
       if (renderedComments >= item.comments.length) {
         socialCommentLoader.classList.add('hidden');
       }
@@ -55,13 +51,6 @@ const generateCommentsFromData = (items) => {
 };
 
 const generatePhotoComments = () => generateCommentsFromData(photosData);
-
-const onEscapeKeyClick = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closeBigPicture();
-  }
-};
 
 const openBigPicture = (evt) => {
   if (evt.target.matches('.picture__img')) {
@@ -90,7 +79,6 @@ const openBigPicture = (evt) => {
   }
 };
 
-
 const closeBigPicture = () => {
   bigPicture.classList.add('hidden');
   document.removeEventListener('keydown', onEscapeKeyClick);
@@ -102,7 +90,16 @@ const closeBigPicture = () => {
   renderedComments = 0;
 };
 
+function onEscapeKeyClick(evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeBigPicture();
+  }
+}
 
-picturesContainer.addEventListener('click', openBigPicture);
-BigPictureCloseButton.addEventListener('click', closeBigPicture);
+const bigPictureEventListeners = () => {
+  picturesContainer.addEventListener('click', openBigPicture);
+  BigPictureCloseButton.addEventListener('click', closeBigPicture);
+};
 
+export {bigPictureEventListeners};
