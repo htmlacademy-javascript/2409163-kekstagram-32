@@ -1,4 +1,5 @@
 import {isEscapeKey} from './util.js';
+import {transformStringToArray} from './util.js';
 
 const MAX_HASHTAG_NUMBER = 5;
 const HASHTAG_REG_EXP_VALIDATION = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -16,24 +17,10 @@ const formCloseButton = modalSubmitPhoto.querySelector('.img-upload__cancel');
 const hashtagField = modalSubmitPhoto.querySelector('.text__hashtags');
 const commentField = modalSubmitPhoto.querySelector('.text__description');
 
-const transformHashtagsToArray = (inputValue) => inputValue
-  .trim()
-  .split(' ')
-  .filter((tag) => Boolean(tag.length));
-
-const hasValidPattern = (inputValue) => {
-  for (const tag of transformHashtagsToArray(inputValue)) {
-    if (!HASHTAG_REG_EXP_VALIDATION.test(tag)) {
-      return false;
-    }
-  }
-  return true;
-};
-  // transformHashtagsToArray(inputValue).every((tag) => HASHTAG_REG_EXP_VALIDATION.test(tag));
-
-const hasValidNumber = (inputValue) => transformHashtagsToArray(inputValue).length <= MAX_HASHTAG_NUMBER;
+const hasValidPattern = (inputValue) => transformStringToArray(inputValue).every((tag) => HASHTAG_REG_EXP_VALIDATION.test(tag));
+const hasValidNumber = (inputValue) => transformStringToArray(inputValue).length <= MAX_HASHTAG_NUMBER;
 const hasUniqueTags = (inputValue) => {
-  const lowerCaseArray = transformHashtagsToArray(inputValue).map((tag) => tag.toLowerCase());
+  const lowerCaseArray = transformStringToArray(inputValue).map((tag) => tag.toLowerCase());
   return lowerCaseArray.length === new Set(lowerCaseArray).size;
 };
 
@@ -50,13 +37,9 @@ pristine.addValidator(hashtagField, hasUniqueTags, HASHTAG_ERROR_TEXT.NOT_UNIQUE
 
 const onFormSubmit = (evt) => {
   evt.preventDefault();
-  // console.log(pristine.validate());
 };
 
-
 imgUploadForm.addEventListener('submit', onFormSubmit);
-
-// const imgUploadPreview = formEditPhoto.querySelector('.img-upload__preview').querySelector('img');
 
 function onEscapeKeyClick(evt) {
   if (isEscapeKey(evt)) {
@@ -82,9 +65,6 @@ function showModal () {
   imgUploadController.value = '';
   hashtagField.addEventListener('keydown', ignoreEscape);
   commentField.addEventListener('keydown', ignoreEscape);
-
-  //подставить в форму редактирования
-  //подставить в превью эффектов
 }
 
 function closeModal () {
@@ -97,4 +77,3 @@ function closeModal () {
 }
 
 imgUploadController.addEventListener('change', showModal);
-

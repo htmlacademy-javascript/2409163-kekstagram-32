@@ -33,6 +33,11 @@ const getRandomArrayElement = (array) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {generateArray, getRandomInteger, getRandomArrayElement, isEscapeKey};
+const transformStringToArray = (string) => string
+  .trim()
+  .split(' ')
+  .filter((tag) => Boolean(tag.length));
+
+export {generateArray, getRandomInteger, getRandomArrayElement, isEscapeKey, transformStringToArray};
 
 
