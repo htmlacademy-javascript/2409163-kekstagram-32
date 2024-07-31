@@ -1,5 +1,7 @@
 import {isEscapeKey} from './util.js';
 import {transformStringToArray} from './util.js';
+import {imgUploadForm, addScaleControlButtonListeners, removeScaleControlButtonListeners} from './form_scale.js';
+import {addFilterListeners, removeFilterListeners} from './form_effects.js';
 
 const MAX_HASHTAG_NUMBER = 5;
 const HASHTAG_REG_EXP_VALIDATION = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -10,7 +12,7 @@ const HASHTAG_ERROR_TEXT = {
 };
 
 const body = document.querySelector('body');
-const imgUploadForm = document.querySelector('.img-upload__form');
+// const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUploadController = imgUploadForm.querySelector('.img-upload__input');
 const modalSubmitPhoto = document.querySelector('.img-upload__overlay');
 const formCloseButton = modalSubmitPhoto.querySelector('.img-upload__cancel');
@@ -65,6 +67,8 @@ function showModal () {
   imgUploadController.value = '';
   hashtagField.addEventListener('keydown', ignoreEscape);
   commentField.addEventListener('keydown', ignoreEscape);
+  addScaleControlButtonListeners();
+  addFilterListeners();
 }
 
 function closeModal () {
@@ -74,6 +78,12 @@ function closeModal () {
   formCloseButton.removeEventListener('click', closeModal);
   document.removeEventListener('keydown', onEscapeKeyClick);
   imgUploadController.addEventListener('change', showModal);
+  removeScaleControlButtonListeners();
+  removeFilterListeners();
 }
 
-imgUploadController.addEventListener('change', showModal);
+const ImgUploadControllerListener = () => {
+  imgUploadController.addEventListener('change', showModal);
+};
+
+export {ImgUploadControllerListener};
