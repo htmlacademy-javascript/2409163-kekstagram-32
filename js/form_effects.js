@@ -1,5 +1,6 @@
-import { imgUploadPreview } from './form_scale.js';
+import {imgUploadPreview, scaleControlValueInput} from './form_scale.js';
 
+const SCALE_VALUE_DEFAULT = 100;
 const imgUploadForm = document.querySelector('.img-upload__form');
 const sliderContainer = imgUploadForm.querySelector('.img-upload__effect-level');
 const sliderElement = sliderContainer.querySelector('.effect-level__slider');
@@ -11,6 +12,15 @@ const radioSepia = effectsList.querySelector('#effect-sepia');
 const radioMarvin = effectsList.querySelector('#effect-marvin');
 const radioPhobos = effectsList.querySelector('#effect-phobos');
 const radioHeat = effectsList.querySelector('#effect-heat');
+
+const filterUnits = {
+  grayscale: '',
+  sepia: '',
+  invert: '%',
+  blur: 'px',
+  brightness: ''
+};
+
 
 let filterType = '';
 sliderContainer.classList.add('hidden');
@@ -47,7 +57,8 @@ const updateSliderOptions = (minValue, maxValue, startValue, step) => {
 
 const switchSlider = () => {
   sliderValueInput.value = sliderElement.noUiSlider.get();
-  imgUploadPreview.style = `filter: ${filterType}(${sliderElement.noUiSlider.get()})`;
+  imgUploadPreview.style = `filter: ${filterType}(${sliderElement.noUiSlider.get()}${filterUnits[filterType]})`;
+  scaleControlValueInput.value = `${SCALE_VALUE_DEFAULT}%`;
 };
 
 const switchOriginal = () => {
@@ -72,10 +83,7 @@ const switchSepia = () => {
 const switchMarvin = () => {
   updateSliderOptions(0, 100, 100, 1);
   filterType = 'invert';
-  sliderElement.noUiSlider.on('update', () => {
-    sliderValueInput.value = sliderElement.noUiSlider.get();
-    imgUploadPreview.style = `filter: ${filterType}(${sliderElement.noUiSlider.get()}%)`;
-  });
+  sliderElement.noUiSlider.on('update', switchSlider);
 };
 
 const switchPhobos = () => {
@@ -108,4 +116,4 @@ const removeFilterListeners = () => {
   radioHeat.removeEventListener('change', switchHeat);
 };
 
-export {addFilterListeners, removeFilterListeners};
+export {addFilterListeners, removeFilterListeners, SCALE_VALUE_DEFAULT};
