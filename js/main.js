@@ -1,10 +1,15 @@
-import {photosData} from './data.js';
+import {picturesContainer, imageUploadController} from './util.js';
+import {photosData} from './server_api.js';
 import {renderThumbnails} from './thumbnails.js';
-import { bigPictureEventListeners } from './big_picture.js';
-import {ImgUploadControllerListener} from './form_open_close_validation.js';
-import './form_scale.js';
-import './form_effects.js';
+import {openImageUploadForm, closeImageUploadForm} from './form_open_close.js';
+import {setUserFormSubmit} from './form_validation.js';
+import {openBigPicture} from './big_picture.js';
+import './form_scale_controller.js';
+import './form_filters.js';
 
 renderThumbnails(photosData);
-bigPictureEventListeners();
-ImgUploadControllerListener();
+picturesContainer.addEventListener('click', openBigPicture);
+imageUploadController.addEventListener('change', openImageUploadForm);
+
+setUserFormSubmit(closeImageUploadForm);
+

@@ -73,6 +73,6 @@ const getPhotos = () => Array.from(
   (_, index) => createNewPhoto(index + 1)
 );
 
-const photosData = getPhotos();
-export {photosData};
+const photosDataMock = getPhotos();
+export {photosDataMock};
 

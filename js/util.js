@@ -1,3 +1,21 @@
+const body = document.querySelector('body');
+const picturesContainer = document.querySelector('.pictures');
+const imageUploadForm = document.querySelector('.img-upload__form');
+const imageUploadPreview = imageUploadForm.querySelector('img');
+const submitButton = document.querySelector('.img-upload__submit');
+
+const imageUploadController = imageUploadForm.querySelector('.img-upload__input');
+const imageUploadOverlay = document.querySelector('.img-upload__overlay');
+const formCloseButton = imageUploadOverlay.querySelector('.img-upload__cancel');
+const hashtagField = imageUploadOverlay.querySelector('.text__hashtags');
+const commentField = imageUploadOverlay.querySelector('.text__description');
+
+const scaleControlSmallerButton = imageUploadForm.querySelector('.scale__control--smaller');
+const scaleControlBiggerButton = imageUploadForm.querySelector('.scale__control--bigger');
+const scaleControlValueInput = imageUploadForm.querySelector('.scale__control--value');
+
+const ErrorDataMessage = document.querySelector('#data-error').content.querySelector('.data-error').cloneNode(true);
+
 //генератор массива целых числе по возрастанию:
 const generateArray = (minValue, maxValue) => {
   const newArray = [];
@@ -31,6 +49,7 @@ const getRandomArrayElement = (array) => {
   };
 };
 
+
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const transformStringToArray = (string) => string
@@ -38,6 +57,30 @@ const transformStringToArray = (string) => string
   .split(' ')
   .filter((tag) => Boolean(tag.length));
 
-export {generateArray, getRandomInteger, getRandomArrayElement, isEscapeKey, transformStringToArray};
+function ignoreEscape (evt) {
+  if (isEscapeKey(evt)) {
+    evt.stopPropagation();
+  }
+}
+
+
+function blockSubmitButton () {
+  submitButton.disabled = true;
+  submitButton.textContent = 'ФОТО ОТПРАВЛЯЕТСЯ';
+}
+
+function unblockSubmitButton () {
+  submitButton.disabled = false;
+  submitButton.textContent = 'ОПУБЛИКОВАТЬ';
+}
+
+function showErrorDataMessage () {
+  body.appendChild(ErrorDataMessage);
+  setTimeout(() => {
+    body.removeChild(ErrorDataMessage);
+  }, 5000);
+}
+
+export {body, picturesContainer, imageUploadForm, imageUploadPreview, imageUploadController, imageUploadOverlay, formCloseButton, hashtagField, commentField, scaleControlValueInput, scaleControlSmallerButton, scaleControlBiggerButton, generateArray, getRandomInteger, getRandomArrayElement, isEscapeKey, transformStringToArray, blockSubmitButton, unblockSubmitButton, ignoreEscape, showErrorDataMessage};
 
 

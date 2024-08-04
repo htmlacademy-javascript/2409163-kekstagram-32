@@ -1,11 +1,10 @@
-import {imgUploadPreview, scaleControlValueInput} from './form_scale.js';
+import {imageUploadForm, imageUploadPreview, scaleControlValueInput} from './util.js';
 
 const SCALE_VALUE_DEFAULT = 100;
-const imgUploadForm = document.querySelector('.img-upload__form');
-const sliderContainer = imgUploadForm.querySelector('.img-upload__effect-level');
+const sliderContainer = imageUploadForm.querySelector('.img-upload__effect-level');
 const sliderElement = sliderContainer.querySelector('.effect-level__slider');
 const sliderValueInput = sliderContainer.querySelector('.effect-level__value');
-const effectsList = imgUploadForm.querySelector('.effects__list');
+const effectsList = imageUploadForm.querySelector('.effects__list');
 const radioOriginal = effectsList.querySelector('#effect-none');
 const radioChrome = effectsList.querySelector('#effect-chrome');
 const radioSepia = effectsList.querySelector('#effect-sepia');
@@ -21,9 +20,7 @@ const filterUnits = {
   brightness: ''
 };
 
-
 let filterType = '';
-sliderContainer.classList.add('hidden');
 
 noUiSlider.create(sliderElement, {
   range: {
@@ -57,63 +54,63 @@ const updateSliderOptions = (minValue, maxValue, startValue, step) => {
 
 const switchSlider = () => {
   sliderValueInput.value = sliderElement.noUiSlider.get();
-  imgUploadPreview.style = `filter: ${filterType}(${sliderElement.noUiSlider.get()}${filterUnits[filterType]})`;
+  imageUploadPreview.style = `filter: ${filterType}(${sliderElement.noUiSlider.get()}${filterUnits[filterType]})`;
   scaleControlValueInput.value = `${SCALE_VALUE_DEFAULT}%`;
 };
 
-const switchOriginal = () => {
+const switchFilterToOriginal = () => {
   sliderContainer.classList.add('hidden');
-  imgUploadPreview.style = '';
+  imageUploadPreview.style = '';
   sliderValueInput.value = '';
+  scaleControlValueInput.value = `${SCALE_VALUE_DEFAULT}%`;
 };
 
-const switchChrome = () => {
+const switchFilterToChrome = () => {
   updateSliderOptions(0, 1, 1, 0.1);
   filterType = 'grayscale';
   sliderElement.noUiSlider.on('update', switchSlider);
 };
 
-
-const switchSepia = () => {
+const switchFilterToSepia = () => {
   updateSliderOptions(0, 1, 1, 0.1);
   filterType = 'sepia';
   sliderElement.noUiSlider.on('update', switchSlider);
 };
 
-const switchMarvin = () => {
+const switchFilterToMarvin = () => {
   updateSliderOptions(0, 100, 100, 1);
   filterType = 'invert';
   sliderElement.noUiSlider.on('update', switchSlider);
 };
 
-const switchPhobos = () => {
+const switchFilterToPhobos = () => {
   updateSliderOptions(0, 3, 3, 0.1);
   filterType = 'blur';
   sliderElement.noUiSlider.on('update', switchSlider);
 };
 
-const switchHeat = () => {
+const switchFilterToHeat = () => {
   updateSliderOptions(1, 3, 3, 0.1);
   filterType = 'brightness';
   sliderElement.noUiSlider.on('update', switchSlider);
 };
 
 const addFilterListeners = () => {
-  radioOriginal.addEventListener('change', switchOriginal);
-  radioChrome.addEventListener('change', switchChrome);
-  radioSepia.addEventListener('change', switchSepia);
-  radioMarvin.addEventListener('change', switchMarvin);
-  radioPhobos.addEventListener('change', switchPhobos);
-  radioHeat.addEventListener('change', switchHeat);
+  radioOriginal.addEventListener('change', switchFilterToOriginal);
+  radioChrome.addEventListener('change', switchFilterToChrome);
+  radioSepia.addEventListener('change', switchFilterToSepia);
+  radioMarvin.addEventListener('change', switchFilterToMarvin);
+  radioPhobos.addEventListener('change', switchFilterToPhobos);
+  radioHeat.addEventListener('change', switchFilterToHeat);
 };
 
 const removeFilterListeners = () => {
-  radioOriginal.removeEventListener('change', switchOriginal);
-  radioChrome.removeEventListener('change', switchChrome);
-  radioSepia.removeEventListener('change', switchSepia);
-  radioMarvin.removeEventListener('change', switchMarvin);
-  radioPhobos.removeEventListener('change', switchPhobos);
-  radioHeat.removeEventListener('change', switchHeat);
+  radioOriginal.removeEventListener('change', switchFilterToOriginal);
+  radioChrome.removeEventListener('change', switchFilterToChrome);
+  radioSepia.removeEventListener('change', switchFilterToSepia);
+  radioMarvin.removeEventListener('change', switchFilterToMarvin);
+  radioPhobos.removeEventListener('change', switchFilterToPhobos);
+  radioHeat.removeEventListener('change', switchFilterToHeat);
 };
 
-export {addFilterListeners, removeFilterListeners, SCALE_VALUE_DEFAULT};
+export {addFilterListeners, removeFilterListeners, SCALE_VALUE_DEFAULT, switchFilterToOriginal};
