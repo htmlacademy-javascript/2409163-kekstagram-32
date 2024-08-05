@@ -1,5 +1,6 @@
+import { picturesContainer } from './util.js';
+
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture'); //шаблон picture, который будем клонировать
-const picturesContainer = document.querySelector('.pictures'); //контейнер, куда будем вставлять клоны шаблона с данными
 const pictureFragment = document.createDocumentFragment();
 
 const renderThumbnails = (items) => {

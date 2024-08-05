@@ -1,13 +1,6 @@
-
-const imgUploadForm = document.querySelector('.img-upload__form');
-const scaleControlSmallerButton = imgUploadForm.querySelector('.scale__control--smaller');
-const scaleControlBiggerButton = imgUploadForm.querySelector('.scale__control--bigger');
-const scaleControlValueInput = imgUploadForm.querySelector('.scale__control--value');
-const imgUploadPreview = imgUploadForm.querySelector('img');
-
+import {imageUploadPreview, scaleControlValueInput, scaleControlSmallerButton, scaleControlBiggerButton} from './util.js';
 
 let SCALE_VALUE = 100;
-
 
 const zoomInImage = (evt) => {
   evt.preventDefault();
@@ -18,7 +11,7 @@ const zoomInImage = (evt) => {
   if (SCALE_VALUE <= 75) {
     SCALE_VALUE += 25;
     scaleControlValueInput.value = `${SCALE_VALUE}%`;
-    imgUploadPreview.style = `transform: scale(${SCALE_VALUE / 100})`;
+    imageUploadPreview.style.transform = `scale(${SCALE_VALUE / 100})`;
   }
 };
 
@@ -31,7 +24,7 @@ const zoomOutImage = (evt) => {
   if (SCALE_VALUE >= 50) {
     SCALE_VALUE -= 25;
     scaleControlValueInput.value = `${SCALE_VALUE}%`;
-    imgUploadPreview.style = `transform: scale(${SCALE_VALUE / 100})`;
+    imageUploadPreview.style.transform = `scale(${SCALE_VALUE / 100})`;
   }
 };
 
@@ -45,4 +38,4 @@ const removeScaleControlButtonListeners = () => {
   scaleControlSmallerButton.removeEventListener('click', zoomOutImage);
 };
 
-export {imgUploadForm, imgUploadPreview, scaleControlValueInput, addScaleControlButtonListeners, removeScaleControlButtonListeners};
+export {addScaleControlButtonListeners, removeScaleControlButtonListeners};
