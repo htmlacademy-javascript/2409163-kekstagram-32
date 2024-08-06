@@ -13,14 +13,12 @@ const MESSAGES = [
 const NAMES = ['messi', 'ronaldo', 'mbappe', 'kroos', 'kane', 'modric', 'donnaruma', 'pickford', 'bellingham', 'vinicius', 'rooney', 'beckham', 'khvicha', 'griezmann', 'nababkin'];
 const DESCRIPTIONS = ['#отпуск', '#работа', '#спорт', 'На прогулке', 'в музее', 'семья', 'выходные', '#море', 'на даче', '#горы'];
 
-//массивы из условий задачи:
 const idArray = generateArray(1, 25);
 const likesArray = generateArray(15, 200);
 const commentsArray = generateArray (0, 30);
 const commentsIDArray = generateArray(1, 9999);
 const avatarsArray = generateArray(1, 5);
 
-//переменные для вызова функции с замыканием
 const generateRandomPhotoID = getRandomArrayElement(idArray);
 const generateDescription = getRandomArrayElement(DESCRIPTIONS);
 const generateLikesNum = getRandomArrayElement(likesArray);
@@ -30,8 +28,6 @@ const generateAvatarsNum = getRandomArrayElement(avatarsArray);
 const generateMessageText = getRandomArrayElement(MESSAGES);
 const generateName = getRandomArrayElement(NAMES);
 
-
-//генератор текста комментария
 const getRandomCommentMessage = () => {
   const sentenceNumber = getRandomInteger(1, 2);
   const firstSentence = generateMessageText();
@@ -46,7 +42,6 @@ const getRandomCommentMessage = () => {
   }
 };
 
-//генератор объекта комментария
 const createComment = function() {
   return {
     id: generateCommentsID(),
@@ -56,7 +51,7 @@ const createComment = function() {
   };
 
 };
-//генератор объекта фото
+
 const createNewPhoto = function(index) {
 
   return {
@@ -74,5 +69,6 @@ const getPhotos = () => Array.from(
 );
 
 const photosDataMock = getPhotos();
+
 export {photosDataMock};
 

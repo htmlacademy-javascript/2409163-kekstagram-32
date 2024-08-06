@@ -1,6 +1,9 @@
-import {imageUploadForm, imageUploadPreview, scaleControlValueInput} from './util.js';
+import {imageUploadForm} from './util.js';
 
 const SCALE_VALUE_DEFAULT = 100;
+
+const imageUploadPreview = imageUploadForm.querySelector('img');
+const scaleControlValueInput = imageUploadForm.querySelector('.scale__control--value');
 const sliderContainer = imageUploadForm.querySelector('.img-upload__effect-level');
 const sliderElement = sliderContainer.querySelector('.effect-level__slider');
 const sliderValueInput = sliderContainer.querySelector('.effect-level__value');

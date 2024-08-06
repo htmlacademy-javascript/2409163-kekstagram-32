@@ -1,4 +1,4 @@
-import { picturesContainer } from './util.js';
+import {thumbnailsContainer} from './util.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture'); //шаблон picture, который будем клонировать
 const pictureFragment = document.createDocumentFragment();
@@ -17,7 +17,7 @@ const renderThumbnails = (items) => {
     pictureComments.textContent = item.comments.length;
     pictureFragment.appendChild(pictureElement);
   });
-  picturesContainer.appendChild(pictureFragment);
+  thumbnailsContainer.appendChild(pictureFragment);
 };
 
-export {renderThumbnails, picturesContainer};
+export {renderThumbnails};
