@@ -1,4 +1,9 @@
-import {imageUploadPreview, scaleControlValueInput, scaleControlSmallerButton, scaleControlBiggerButton} from './util.js';
+import {imageUploadForm} from './util';
+
+const imageUploadPreview = imageUploadForm.querySelector('img');
+const scaleControlValueInput = imageUploadForm.querySelector('.scale__control--value');
+const scaleControlSmallerButton = imageUploadForm.querySelector('.scale__control--smaller');
+const scaleControlBiggerButton = imageUploadForm.querySelector('.scale__control--bigger');
 
 let SCALE_VALUE = 100;
 

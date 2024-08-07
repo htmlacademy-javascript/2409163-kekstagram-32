@@ -1,31 +1,17 @@
 const body = document.querySelector('body');
-const picturesContainer = document.querySelector('.pictures');
+const thumbnailsContainer = document.querySelector('.pictures');
 const imageUploadForm = document.querySelector('.img-upload__form');
-const imageUploadPreview = imageUploadForm.querySelector('img');
 const submitButton = document.querySelector('.img-upload__submit');
-
-const imageUploadController = imageUploadForm.querySelector('.img-upload__input');
-const imageUploadOverlay = document.querySelector('.img-upload__overlay');
-const formCloseButton = imageUploadOverlay.querySelector('.img-upload__cancel');
-const hashtagField = imageUploadOverlay.querySelector('.text__hashtags');
-const commentField = imageUploadOverlay.querySelector('.text__description');
-
-const scaleControlSmallerButton = imageUploadForm.querySelector('.scale__control--smaller');
-const scaleControlBiggerButton = imageUploadForm.querySelector('.scale__control--bigger');
-const scaleControlValueInput = imageUploadForm.querySelector('.scale__control--value');
-
 const ErrorDataMessage = document.querySelector('#data-error').content.querySelector('.data-error').cloneNode(true);
 
-//генератор массива целых числе по возрастанию:
 const generateArray = (minValue, maxValue) => {
-  const newArray = [];
+  const data = [];
   for (let i = 0; i <= maxValue - minValue; i++) {
-    newArray.push(minValue + i);
+    data.push(minValue + i);
   }
-  return newArray;
+  return data;
 };
 
-//генератор случайного целого числа:
 const getRandomInteger = (minNum, maxNum) => {
   const lower = Math.ceil(Math.min(minNum, maxNum));
   const upper = Math.floor(Math.max(minNum, maxNum));
@@ -33,23 +19,40 @@ const getRandomInteger = (minNum, maxNum) => {
   return Math.floor(result);
 };
 
-//генератор случайного элемента в массиве:
-const getRandomArrayElement = (array) => {
+
+const getRandomArrayElement = (data) => {
   const previousValues = [];
   return function () {
-    let currentElement = array[getRandomInteger(0, array.length - 1)];
+    let currentElement = data[getRandomInteger(0, data.length - 1)];
     while (previousValues.includes(currentElement)) {
-      currentElement = array[getRandomInteger(0, array.length - 1)];
+      currentElement = data[getRandomInteger(0, data.length - 1)];
     }
-    if (array.length >= 25) {
+    if (data.length >= 25) {
       previousValues.push(currentElement);
-    } //уникальные элементы нужны только, если массив >= 25
-
+    }
     return currentElement;
   };
 };
 
+const generateRandomTenElementsFromArray = (data) => {
+  const generateElement = getRandomArrayElement(data);
+  const randomTenElements = [];
+  for (let i = 0; i < 10; i++) {
+    const currentElement = generateElement();
+    if (!randomTenElements.includes(currentElement)) {
+      randomTenElements.push(currentElement);
+    } else {
+      i--;
+    }
+  }
+  return randomTenElements;
+};
 
+const RemoveAllElementsFromArray = (data) => {
+  for (let i = data.length - 1; i >= 0; i--) {
+    data[i].remove();
+  }
+};
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const transformStringToArray = (string) => string
@@ -62,7 +65,6 @@ function ignoreEscape (evt) {
     evt.stopPropagation();
   }
 }
-
 
 function blockSubmitButton () {
   submitButton.disabled = true;
@@ -81,6 +83,12 @@ function showErrorDataMessage () {
   }, 5000);
 }
 
-export {body, picturesContainer, imageUploadForm, imageUploadPreview, imageUploadController, imageUploadOverlay, formCloseButton, hashtagField, commentField, scaleControlValueInput, scaleControlSmallerButton, scaleControlBiggerButton, generateArray, getRandomInteger, getRandomArrayElement, isEscapeKey, transformStringToArray, blockSubmitButton, unblockSubmitButton, ignoreEscape, showErrorDataMessage};
+function debounce (callback, timeoutDelay) {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
 
-
+export {body, thumbnailsContainer, imageUploadForm, generateArray, getRandomInteger, getRandomArrayElement, isEscapeKey, transformStringToArray, blockSubmitButton, unblockSubmitButton, ignoreEscape, showErrorDataMessage, debounce, generateRandomTenElementsFromArray, RemoveAllElementsFromArray};
