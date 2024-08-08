@@ -20,7 +20,7 @@ const renderThumbnails = (items) => {
     });
     thumbnailsContainer.appendChild(pictureFragment);
   },
-  100,
+  500,
   )();
 };
 
