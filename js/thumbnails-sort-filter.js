@@ -1,52 +1,58 @@
-import {body, thumbnailsContainer, debounce, generateRandomTenElementsFromArray, RemoveAllElementsFromArray} from './util.js';
+import {body, generateRandomTenElementsFromArray} from './util.js';
 import {renderThumbnails} from './thumbnails-render.js';
+import {getData} from './server_api.js';
 
-const ThumbnailsListFilters = body.querySelector('.img-filters');
-const ThumbnailsFilterDefaultButton = ThumbnailsListFilters.querySelector('#filter-default');
-const ThumbnailsFilterRandomButton = ThumbnailsListFilters.querySelector('#filter-random');
-const ThumbnailsFilterSortDiscussedButton = ThumbnailsListFilters.querySelector('#filter-discussed');
-const renderedThumbnails = thumbnailsContainer.getElementsByClassName('picture');
+const thumbnailsListFiltersContainer = body.querySelector('.img-filters');
 
-const addThumbnailsFilterDefaultButtonListener = (dataToFilter) => {
-  ThumbnailsFilterDefaultButton.addEventListener('click', debounce(
-    (evt) => {
-      evt.preventDefault();
-      RemoveAllElementsFromArray(renderedThumbnails);
-      renderThumbnails(dataToFilter);
-    },
-    500,
-  ));
+const comparePhotoCommentsLength = (photoA, photoB) => photoB.comments.length - photoA.comments.length;
+
+const getPhotosData = async() => {
+  try {
+    const response = getData();
+    return await response;
+  } catch {
+    return 0;
+  }
 };
 
-const addThumbnailsFilterRandomButtonListener = (dataToFilter) => {
-  ThumbnailsFilterRandomButton.addEventListener('click', debounce(
-    (evt) => {
-      evt.preventDefault();
-      RemoveAllElementsFromArray(renderedThumbnails);
-      renderThumbnails(generateRandomTenElementsFromArray(dataToFilter));
-    },
-    500,
-  ));
+const photosData = await getPhotosData();
+
+const FilterTypes = {
+  DEFAULT: 'filter-default',
+  RANDOM_TEN: 'filter-random',
+  DISCUSSED: 'filter-discussed'
 };
 
-const addThumbnailsFilterSortDiscussedButtonListener = (dataToFilter) => {
-  const comparePhotoCommentsLength = (photoA, photoB) => photoB.comments.length - photoA.comments.length;
-  ThumbnailsFilterSortDiscussedButton.addEventListener('click', debounce(
-    (evt) => {
-      evt.preventDefault();
-      RemoveAllElementsFromArray(renderedThumbnails);
-      renderThumbnails(dataToFilter.slice().sort(comparePhotoCommentsLength));
-    },
-    500,
-  ));
+const showThumbnailsFiltersContainer = () => {
+  thumbnailsListFiltersContainer.classList.remove('img-filters--inactive');
 };
 
-const addThumbnailsFilterButtonsListeners = (dataToFilter) => {
-  addThumbnailsFilterDefaultButtonListener(dataToFilter);
-  addThumbnailsFilterRandomButtonListener(dataToFilter);
-  addThumbnailsFilterSortDiscussedButtonListener(dataToFilter);
+const onFilterButtonSubmit = (evt) => {
+
+
+  if (evt.target.classList.contains('img-filters__button--active') || evt.target.classList.contains('img-filters')) {
+    return;
+  }
+  document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
+  evt.target.classList.add('img-filters__button--active');
+  switch (evt.target.id) {
+
+    case FilterTypes.DEFAULT:
+      renderThumbnails(photosData);
+      return;
+
+    case FilterTypes.RANDOM_TEN:
+      renderThumbnails(generateRandomTenElementsFromArray(photosData));
+      return;
+
+    case FilterTypes.DISCUSSED:
+      renderThumbnails(photosData.slice().sort(comparePhotoCommentsLength));
+  }
 };
 
-export {ThumbnailsListFilters, addThumbnailsFilterButtonsListeners};
+const addThumbnailsFilterButtonsListeners = () => {
+  thumbnailsListFiltersContainer.addEventListener('click', onFilterButtonSubmit);
+};
 
+export {showThumbnailsFiltersContainer, addThumbnailsFilterButtonsListeners, onFilterButtonSubmit};
 

@@ -3,7 +3,6 @@ import {imageUploadForm} from './util.js';
 const SCALE_VALUE_DEFAULT = 100;
 
 const imageUploadPreview = imageUploadForm.querySelector('img');
-const scaleControlValueInput = imageUploadForm.querySelector('.scale__control--value');
 const sliderContainer = imageUploadForm.querySelector('.img-upload__effect-level');
 const sliderElement = sliderContainer.querySelector('.effect-level__slider');
 const sliderValueInput = sliderContainer.querySelector('.effect-level__value');
@@ -57,15 +56,14 @@ const updateSliderOptions = (minValue, maxValue, startValue, step) => {
 
 const switchSlider = () => {
   sliderValueInput.value = sliderElement.noUiSlider.get();
-  imageUploadPreview.style = `filter: ${filterType}(${sliderElement.noUiSlider.get()}${filterUnits[filterType]})`;
-  scaleControlValueInput.value = `${SCALE_VALUE_DEFAULT}%`;
+  imageUploadPreview.style.filter = `${filterType}(${sliderElement.noUiSlider.get()}${filterUnits[filterType]})`;
 };
 
 const switchFilterToOriginal = () => {
   sliderContainer.classList.add('hidden');
-  imageUploadPreview.style = '';
+  imageUploadPreview.style.filter = '';
   sliderValueInput.value = '';
-  scaleControlValueInput.value = `${SCALE_VALUE_DEFAULT}%`;
+
 };
 
 const switchFilterToChrome = () => {

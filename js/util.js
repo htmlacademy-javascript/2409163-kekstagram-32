@@ -48,7 +48,8 @@ const generateRandomTenElementsFromArray = (data) => {
   return randomTenElements;
 };
 
-const RemoveAllElementsFromArray = (data) => {
+const findAndRemoveAllElementsFromContainer = (container, elementClass) => {
+  const data = container.querySelectorAll(elementClass);
   for (let i = data.length - 1; i >= 0; i--) {
     data[i].remove();
   }
@@ -60,35 +61,34 @@ const transformStringToArray = (string) => string
   .split(' ')
   .filter((tag) => Boolean(tag.length));
 
-function ignoreEscape (evt) {
+const ignoreEscape = (evt) => {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
   }
-}
+};
 
-function blockSubmitButton () {
+const blockSubmitButton = () => {
   submitButton.disabled = true;
   submitButton.textContent = 'ФОТО ОТПРАВЛЯЕТСЯ';
-}
+};
 
-function unblockSubmitButton () {
+const unblockSubmitButton = () => {
   submitButton.disabled = false;
   submitButton.textContent = 'ОПУБЛИКОВАТЬ';
-}
+};
 
-function showErrorDataMessage () {
+const showErrorDataMessage = () => {
   body.appendChild(ErrorDataMessage);
   setTimeout(() => {
     body.removeChild(ErrorDataMessage);
   }, 5000);
-}
-
-function debounce (callback, timeoutDelay) {
+};
+const debounce = (callback, timeoutDelay) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
-}
+};
 
-export {body, thumbnailsContainer, imageUploadForm, generateArray, getRandomInteger, getRandomArrayElement, isEscapeKey, transformStringToArray, blockSubmitButton, unblockSubmitButton, ignoreEscape, showErrorDataMessage, debounce, generateRandomTenElementsFromArray, RemoveAllElementsFromArray};
+export {body, thumbnailsContainer, imageUploadForm, generateArray, getRandomInteger, getRandomArrayElement, isEscapeKey, transformStringToArray, blockSubmitButton, unblockSubmitButton, ignoreEscape, showErrorDataMessage, debounce, generateRandomTenElementsFromArray, findAndRemoveAllElementsFromContainer};
