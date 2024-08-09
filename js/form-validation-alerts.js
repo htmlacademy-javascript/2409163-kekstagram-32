@@ -1,5 +1,5 @@
 import {body, imageUploadForm, isEscapeKey} from './util';
-import { closeImageUploadForm, onDocumentEscapeKeyDownForm } from './form-close';
+import {closeImageUploadForm, onDocumentEscapeKeyDownForm} from './form-close';
 
 const formCloseButton = imageUploadForm.querySelector('.img-upload__cancel');
 
@@ -61,7 +61,7 @@ function onDocumentEscapeKeyDownSuccessAlert (evt) {
 }
 
 function onSuccessMessageClickOutside (evt) {
-  if (!evt.target.matches('.error__inner') && !evt.target.matches('.error__title')) {
+  if (!evt.target.matches('.success__inner') && !evt.target.matches('.success__title')) {
     evt.preventDefault();
     removeSuccessAlert();
   }

@@ -1,5 +1,5 @@
-import {photosData} from './server_api.js';
 import {body, thumbnailsContainer} from './util.js';
+import {getData} from './server_api.js';
 import {closeBigPicture, onDocumentEscapeKeyDown} from './big-picture-close.js';
 
 const bigPicture = document.querySelector('.big-picture');
@@ -14,16 +14,27 @@ const socialCommentsBlock = bigPicture.querySelector('.social__comments');
 
 const COMMENTS_TO_RENDER_BY_DEFAULT = 5;
 
+const getPhotosData = async() => {
+  try {
+    const response = getData();
+    return await response;
+  } catch {
+    return 0;
+  }
+};
+
+const photosData = await getPhotosData();
+
 const insertCommentsToContainer = (item, amount, container) => {
   for (let i = 0; i < amount; i++) {
-    container.insertAdjacentHTML('afterbegin', `
+    container.insertAdjacentHTML('beforeend', `
       <li class="social__comment">
         <img
           class="social__picture"
           src="${item.comments[i].avatar}"
           alt="${item.comments[i].name}"
           width="35" height="35">
-        <p class="social__text">"${item.comments[i].message}"</p>
+        <p class="social__text">${item.comments[i].message}</p>
       </li>
     `);
   }
@@ -52,7 +63,7 @@ const onThumbnailsClick = (evt) => {
   if (evt.target.matches('.picture__img')) {
     body.classList.add('modal-open');
     bigPicture.classList.remove('hidden');
-    bigPictureImage.src = evt.target.src;
+    bigPictureImage.src = `photos/${parseFloat(evt.target.parentNode.id) + 1}.jpg`;
     bigPictureImage.id = evt.target.parentNode.id;
     bigPictureLikes.textContent = evt.target.parentNode.querySelector('.picture__likes').textContent;
     bigPictureTotalCommentsCounter.textContent = evt.target.parentNode.querySelector('.picture__comments').textContent;

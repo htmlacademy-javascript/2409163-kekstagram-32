@@ -1,38 +1,30 @@
-import {showErrorDataMessage} from './util.js';
-import {ThumbnailsListFilters} from './thumbnails-sort-filter.js';
-
-const SERVER_URL_POST = 'https://32.javascript.htmlacademy.pro/kekstagram';
-const SERVER_URL_GET = `${SERVER_URL_POST}/data`;
-
-const getDataFromServer = async () => {
-  let response;
-  try {
-    response = await fetch(SERVER_URL_GET);
-    if (response.ok) {
-      const data = await response.json();
-      ThumbnailsListFilters.classList.remove('img-filters--inactive');
-      return data;
-    }
-    throw new Error('Сервер прислал что-то не то');
-  } catch (err) {
-    showErrorDataMessage();
-  }
+const BASE_URL = 'https://32.javascript.htmlacademy.pro/kekstagram';
+const Route = {
+  GET_DATA: '/data',
+  SEND_DATA: '/',
+};
+const Method = {
+  GET: 'GET',
+  POST: 'POST',
+};
+const ErrorText = {
+  GET_DATA: 'Не удалось загрузить данные. Попробуйте обновить страницу',
+  SEND_DATA: 'Не удалось отправить форму. Попробуйте ещё раз',
 };
 
-const photosData = await getDataFromServer();
-
-const sendDataToServer = async (onSuccess, onFail, body) => {
-  let response;
-  try {
-    response = await fetch(SERVER_URL_POST, {method: 'POST', body: body}); {
-      if (response.ok) {
-        return onSuccess();
+const createRequest = (route, errorText = null, method = Method.GET, body = null) =>
+  fetch(`${BASE_URL}${route}`, {method, body})
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Произошла ошибка ${response.status}: ${response.statusText}`);
       }
-      throw new Error('Данные невалидны');
-    }
-  } catch (err) {
-    onFail();
-  }
-};
+      return response.json();
+    })
+    .catch((err) => {
+      throw new Error(errorText ?? err.message);
+    });
 
-export {photosData, sendDataToServer};
+const getData = () => createRequest(Route.GET_DATA);
+const sendData = (body) => createRequest(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body);
+
+export {getData, sendData};

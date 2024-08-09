@@ -5,31 +5,21 @@ const scaleControlValueInput = imageUploadForm.querySelector('.scale__control--v
 const scaleControlSmallerButton = imageUploadForm.querySelector('.scale__control--smaller');
 const scaleControlBiggerButton = imageUploadForm.querySelector('.scale__control--bigger');
 
-let SCALE_VALUE = 100;
+const SCALE_VALUE_MIN = 25;
+const SCALE_VALUE_MAX = 100;
+const SCALE_VALUE_STEP = 25;
 
-const zoomInImage = (evt) => {
-  evt.preventDefault();
-  if (scaleControlValueInput.value === '100%') {
-    SCALE_VALUE = 100;
-  }
-
-  if (SCALE_VALUE <= 75) {
-    SCALE_VALUE += 25;
-    scaleControlValueInput.value = `${SCALE_VALUE}%`;
-    imageUploadPreview.style.transform = `scale(${SCALE_VALUE / 100})`;
+const zoomInImage = () => {
+  if (parseFloat(scaleControlValueInput.value) < SCALE_VALUE_MAX) {
+    scaleControlValueInput.value = `${parseFloat(scaleControlValueInput.value) + SCALE_VALUE_STEP}%`;
+    imageUploadPreview.style.transform = `scale(${parseFloat(scaleControlValueInput.value) / 100})`;
   }
 };
 
-const zoomOutImage = (evt) => {
-  evt.preventDefault();
-  if (scaleControlValueInput.value === '100%') {
-    SCALE_VALUE = 100;
-  }
-
-  if (SCALE_VALUE >= 50) {
-    SCALE_VALUE -= 25;
-    scaleControlValueInput.value = `${SCALE_VALUE}%`;
-    imageUploadPreview.style.transform = `scale(${SCALE_VALUE / 100})`;
+const zoomOutImage = () => {
+  if (parseFloat(scaleControlValueInput.value) > SCALE_VALUE_MIN) {
+    scaleControlValueInput.value = `${parseFloat(scaleControlValueInput.value) - SCALE_VALUE_STEP}%`;
+    imageUploadPreview.style.transform = `scale(${parseFloat(scaleControlValueInput.value) / 100})`;
   }
 };
 
