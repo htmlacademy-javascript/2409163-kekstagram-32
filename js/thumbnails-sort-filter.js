@@ -1,52 +1,56 @@
-import {body, thumbnailsContainer, debounce, generateRandomTenElementsFromArray, RemoveAllElementsFromArray} from './util.js';
+import {body, debounce, findAndRemoveAllElementsFromContainer, generateRandomTenElementsFromArray} from './util.js';
 import {renderThumbnails} from './thumbnails-render.js';
 
-const ThumbnailsListFilters = body.querySelector('.img-filters');
-const ThumbnailsFilterDefaultButton = ThumbnailsListFilters.querySelector('#filter-default');
-const ThumbnailsFilterRandomButton = ThumbnailsListFilters.querySelector('#filter-random');
-const ThumbnailsFilterSortDiscussedButton = ThumbnailsListFilters.querySelector('#filter-discussed');
-const renderedThumbnails = thumbnailsContainer.getElementsByClassName('picture');
+const DEBOUNCE_TIME = 500;
+const thumbnailsListFiltersContainer = body.querySelector('.img-filters');
 
-const addThumbnailsFilterDefaultButtonListener = (dataToFilter) => {
-  ThumbnailsFilterDefaultButton.addEventListener('click', debounce(
-    (evt) => {
-      evt.preventDefault();
-      RemoveAllElementsFromArray(renderedThumbnails);
-      renderThumbnails(dataToFilter);
-    },
-    500,
-  ));
+const buttonDefault = thumbnailsListFiltersContainer.querySelector('#filter-default');
+const buttonRandomTen = thumbnailsListFiltersContainer.querySelector('#filter-random');
+const buttonDiscussed = thumbnailsListFiltersContainer.querySelector('#filter-discussed');
+
+const showThumbnailsFiltersContainer = () => {
+  thumbnailsListFiltersContainer.classList.remove('img-filters--inactive');
 };
 
-const addThumbnailsFilterRandomButtonListener = (dataToFilter) => {
-  ThumbnailsFilterRandomButton.addEventListener('click', debounce(
-    (evt) => {
-      evt.preventDefault();
-      RemoveAllElementsFromArray(renderedThumbnails);
-      renderThumbnails(generateRandomTenElementsFromArray(dataToFilter));
-    },
-    500,
-  ));
+const comparePhotoCommentsLength = (photoA, photoB) => photoB.comments.length - photoA.comments.length;
+
+const changeActiveButton = (button) => {
+  document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
+  button.classList.add('img-filters__button--active');
 };
 
-const addThumbnailsFilterSortDiscussedButtonListener = (dataToFilter) => {
-  const comparePhotoCommentsLength = (photoA, photoB) => photoB.comments.length - photoA.comments.length;
-  ThumbnailsFilterSortDiscussedButton.addEventListener('click', debounce(
-    (evt) => {
-      evt.preventDefault();
-      RemoveAllElementsFromArray(renderedThumbnails);
-      renderThumbnails(dataToFilter.slice().sort(comparePhotoCommentsLength));
-    },
-    500,
-  ));
+const filterThumbnails = (button, data) => {
+  findAndRemoveAllElementsFromContainer(document, '.picture');
+
+  if (button === buttonRandomTen) {
+    renderThumbnails(generateRandomTenElementsFromArray(data));
+    return;
+  }
+
+  if (button === buttonDiscussed) {
+    renderThumbnails(data.slice().sort(comparePhotoCommentsLength));
+  } else {
+    renderThumbnails(data);
+  }
 };
 
-const addThumbnailsFilterButtonsListeners = (dataToFilter) => {
-  addThumbnailsFilterDefaultButtonListener(dataToFilter);
-  addThumbnailsFilterRandomButtonListener(dataToFilter);
-  addThumbnailsFilterSortDiscussedButtonListener(dataToFilter);
+const addThumbnailsFiltersListeners = (data) => {
+  const filterThumbnailsDebounce = debounce(filterThumbnails, DEBOUNCE_TIME);
+  buttonDefault.addEventListener('click', () => {
+    changeActiveButton(buttonDefault);
+    filterThumbnailsDebounce.call(this, buttonDefault, data);
+  });
+
+  buttonRandomTen.addEventListener('click', () => {
+    changeActiveButton(buttonRandomTen);
+    filterThumbnailsDebounce.call(this, buttonRandomTen, data);
+  });
+
+  buttonDiscussed.addEventListener('click', () => {
+    changeActiveButton(buttonDiscussed);
+    filterThumbnailsDebounce.call(this, buttonDiscussed, data);
+  });
 };
 
-export {ThumbnailsListFilters, addThumbnailsFilterButtonsListeners};
-
+export {showThumbnailsFiltersContainer, addThumbnailsFiltersListeners};
 

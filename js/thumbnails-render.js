@@ -1,6 +1,6 @@
 import {thumbnailsContainer} from './util.js';
 
-const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture'); //шаблон picture, который будем клонировать
+const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictureFragment = document.createDocumentFragment();
 
 const renderThumbnails = (items) => {
@@ -9,7 +9,6 @@ const renderThumbnails = (items) => {
     const pictureImage = pictureElement.querySelector('.picture__img');
     const pictureLikes = pictureElement.querySelector('.picture__likes');
     const pictureComments = pictureElement.querySelector('.picture__comments');
-
     pictureElement.id = item.id;
     pictureImage.src = item.url;
     pictureImage.alt = item.description;
