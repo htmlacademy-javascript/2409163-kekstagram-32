@@ -1,5 +1,5 @@
 import {closeImageUploadForm} from './form-close';
-import {showErrorAlert, showSuccessAlert} from './form-validation-alerts';
+import {showErrorAlert, showSuccessAlert} from './form-validation-alerts.js';
 import {sendData} from './server_api';
 import {blockSubmitButton, imageUploadForm, transformStringToArray, unblockSubmitButton} from './util';
 

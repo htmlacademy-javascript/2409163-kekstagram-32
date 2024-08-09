@@ -1,20 +1,19 @@
-import {addImageUploadControllerListener} from './form-open';
-import {getData} from './server_api';
-import {renderThumbnails} from './thumbnails-render';
-import {addThumbnailsListener} from './big-picture-open';
-import {showErrorDataMessage} from './util';
-import {addThumbnailsFilterButtonsListeners, showThumbnailsFiltersContainer} from './thumbnails-sort-filter';
-
-addThumbnailsFilterButtonsListeners();
+import {addImageUploadControllerListener} from './form-open.js';
+import {getData} from './server_api.js';
+import {renderThumbnails} from './thumbnails-render.js';
+import {addCommentLoaderListener, addThumbnailsListener} from './big-picture-open.js';
+import {addThumbnailsFiltersListeners, showThumbnailsFiltersContainer} from './thumbnails-sort-filter.js';
+import {showErrorDataMessage} from './util.js';
 
 try {
   addImageUploadControllerListener();
   const photosData = await getData();
+  addThumbnailsFiltersListeners(photosData);
   renderThumbnails(photosData);
+  addThumbnailsListener(photosData);
   showThumbnailsFiltersContainer();
-  addThumbnailsListener();
+  addCommentLoaderListener(photosData);
 
 } catch {
   showErrorDataMessage();
 }
-

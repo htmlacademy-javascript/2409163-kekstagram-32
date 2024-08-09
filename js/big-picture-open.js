@@ -1,5 +1,4 @@
 import {body, thumbnailsContainer} from './util.js';
-import {getData} from './server_api.js';
 import {closeBigPicture, onDocumentEscapeKeyDown} from './big-picture-close.js';
 
 const bigPicture = document.querySelector('.big-picture');
@@ -14,16 +13,6 @@ const socialCommentsBlock = bigPicture.querySelector('.social__comments');
 
 const COMMENTS_TO_RENDER_BY_DEFAULT = 5;
 
-const getPhotosData = async() => {
-  try {
-    const response = getData();
-    return await response;
-  } catch {
-    return 0;
-  }
-};
-
-const photosData = await getPhotosData();
 
 const insertCommentsToContainer = (item, amount, container) => {
   for (let i = 0; i < amount; i++) {
@@ -57,9 +46,13 @@ const renderCommentsFromData = (data) => {
   });
 };
 
-const onCommentsLoaderButtonClick = () => renderCommentsFromData(photosData);
+const onCommentsLoaderButtonClick = (data) => renderCommentsFromData(data);
 
-const onThumbnailsClick = (evt) => {
+const addCommentLoaderListener = (data) => {
+  commentLoaderButton.addEventListener('click', () => onCommentsLoaderButtonClick(data));
+};
+
+const onThumbnailsClick = (evt, data) => {
   if (evt.target.matches('.picture__img')) {
     body.classList.add('modal-open');
     bigPicture.classList.remove('hidden');
@@ -69,16 +62,14 @@ const onThumbnailsClick = (evt) => {
     bigPictureTotalCommentsCounter.textContent = evt.target.parentNode.querySelector('.picture__comments').textContent;
     bigPictureDescription.textContent = evt.target.alt;
     socialCommentsBlock.innerHTML = '';
-    renderCommentsFromData(photosData);
+    renderCommentsFromData(data);
     BigPictureCloseButton.addEventListener('click', closeBigPicture);
     document.addEventListener('keydown', onDocumentEscapeKeyDown);
-    commentLoaderButton.addEventListener('click', onCommentsLoaderButtonClick);
-    thumbnailsContainer.removeEventListener('click', onThumbnailsClick);
   }
 };
 
-const addThumbnailsListener = () => {
-  thumbnailsContainer.addEventListener('click', onThumbnailsClick);
+const addThumbnailsListener = (data) => {
+  thumbnailsContainer.addEventListener('click',(evt) => onThumbnailsClick(evt, data));
 };
 
-export {addThumbnailsListener, onThumbnailsClick, onCommentsLoaderButtonClick};
+export {addThumbnailsListener, onThumbnailsClick, addCommentLoaderListener};
