@@ -1,57 +1,56 @@
 import {body, debounce, findAndRemoveAllElementsFromContainer, generateRandomTenElementsFromArray} from './util.js';
 import {renderThumbnails} from './thumbnails-render.js';
 
+const DEBOUNCE_TIME = 500;
 const thumbnailsListFiltersContainer = body.querySelector('.img-filters');
 
-const comparePhotoCommentsLength = (photoA, photoB) => photoB.comments.length - photoA.comments.length;
-const FilterTypes = {
-  DEFAULT: 'filter-default',
-  RANDOM_TEN: 'filter-random',
-  DISCUSSED: 'filter-discussed'
-};
+const buttonDefault = thumbnailsListFiltersContainer.querySelector('#filter-default');
+const buttonRandomTen = thumbnailsListFiltersContainer.querySelector('#filter-random');
+const buttonDiscussed = thumbnailsListFiltersContainer.querySelector('#filter-discussed');
 
 const showThumbnailsFiltersContainer = () => {
   thumbnailsListFiltersContainer.classList.remove('img-filters--inactive');
 };
 
-const onFilterButtonSubmit = (evt, data) => {
-  if (evt.target.classList.contains('img-filters__button--active') || evt.target.classList.contains('img-filters')) {
-    return;
-  }
+const comparePhotoCommentsLength = (photoA, photoB) => photoB.comments.length - photoA.comments.length;
 
+const changeActiveButton = (button) => {
   document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
-  evt.target.classList.add('img-filters__button--active');
+  button.classList.add('img-filters__button--active');
+};
 
-  if (evt.target.id === FilterTypes.RANDOM_TEN) {
-    debounce(() => {
-      findAndRemoveAllElementsFromContainer(document, '.picture');
-      renderThumbnails(generateRandomTenElementsFromArray(data));
-    },
-    500
-    )();
+const filterThumbnails = (button, data) => {
+  findAndRemoveAllElementsFromContainer(document, '.picture');
+
+  if (button === buttonRandomTen) {
+    renderThumbnails(generateRandomTenElementsFromArray(data));
     return;
-
   }
-  if (evt.target.id === FilterTypes.DISCUSSED) {
-    debounce(() => {
-      findAndRemoveAllElementsFromContainer(document, '.picture');
-      renderThumbnails(data.slice().sort(comparePhotoCommentsLength));
-    },
-    500
-    )();
 
+  if (button === buttonDiscussed) {
+    renderThumbnails(data.slice().sort(comparePhotoCommentsLength));
   } else {
-    debounce(() => {
-      findAndRemoveAllElementsFromContainer(document, '.picture');
-      renderThumbnails(data);
-    },
-    500
-    )();
+    renderThumbnails(data);
   }
 };
 
-const addThumbnailsFiltersListener = (cb) => {
-  thumbnailsListFiltersContainer.addEventListener('click',(evt) => onFilterButtonSubmit(evt, cb));
+const addThumbnailsFiltersListeners = (data) => {
+  const filterThumbnailsDebounce = debounce(filterThumbnails, DEBOUNCE_TIME);
+  buttonDefault.addEventListener('click', () => {
+    changeActiveButton(buttonDefault);
+    filterThumbnailsDebounce.call(this, buttonDefault, data);
+  });
+
+  buttonRandomTen.addEventListener('click', () => {
+    changeActiveButton(buttonRandomTen);
+    filterThumbnailsDebounce.call(this, buttonRandomTen, data);
+  });
+
+  buttonDiscussed.addEventListener('click', () => {
+    changeActiveButton(buttonDiscussed);
+    filterThumbnailsDebounce.call(this, buttonDiscussed, data);
+  });
 };
-export {showThumbnailsFiltersContainer, addThumbnailsFiltersListener};
+
+export {showThumbnailsFiltersContainer, addThumbnailsFiltersListeners};
 

@@ -1,10 +1,9 @@
-import {thumbnailsContainer, findAndRemoveAllElementsFromContainer} from './util.js';
+import {thumbnailsContainer} from './util.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictureFragment = document.createDocumentFragment();
 
 const renderThumbnails = (items) => {
-  findAndRemoveAllElementsFromContainer(document, '.picture');
   items.forEach((item) => {
     const pictureElement = pictureTemplate.cloneNode(true);
     const pictureImage = pictureElement.querySelector('.picture__img');
@@ -19,6 +18,5 @@ const renderThumbnails = (items) => {
   });
   thumbnailsContainer.appendChild(pictureFragment);
 };
-
 
 export {renderThumbnails};
