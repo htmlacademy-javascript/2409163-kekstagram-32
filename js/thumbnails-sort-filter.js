@@ -1,22 +1,9 @@
-import {body, generateRandomTenElementsFromArray} from './util.js';
+import {body, debounce, findAndRemoveAllElementsFromContainer, generateRandomTenElementsFromArray} from './util.js';
 import {renderThumbnails} from './thumbnails-render.js';
-import {getData} from './server_api.js';
 
 const thumbnailsListFiltersContainer = body.querySelector('.img-filters');
 
 const comparePhotoCommentsLength = (photoA, photoB) => photoB.comments.length - photoA.comments.length;
-
-const getPhotosData = async() => {
-  try {
-    const response = getData();
-    return await response;
-  } catch {
-    return 0;
-  }
-};
-
-const photosData = await getPhotosData();
-
 const FilterTypes = {
   DEFAULT: 'filter-default',
   RANDOM_TEN: 'filter-random',
@@ -27,32 +14,44 @@ const showThumbnailsFiltersContainer = () => {
   thumbnailsListFiltersContainer.classList.remove('img-filters--inactive');
 };
 
-const onFilterButtonSubmit = (evt) => {
-
-
+const onFilterButtonSubmit = (evt, data) => {
   if (evt.target.classList.contains('img-filters__button--active') || evt.target.classList.contains('img-filters')) {
     return;
   }
+
   document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
   evt.target.classList.add('img-filters__button--active');
-  switch (evt.target.id) {
 
-    case FilterTypes.DEFAULT:
-      renderThumbnails(photosData);
-      return;
+  if (evt.target.id === FilterTypes.RANDOM_TEN) {
+    debounce(() => {
+      findAndRemoveAllElementsFromContainer(document, '.picture');
+      renderThumbnails(generateRandomTenElementsFromArray(data));
+    },
+    500
+    )();
+    return;
 
-    case FilterTypes.RANDOM_TEN:
-      renderThumbnails(generateRandomTenElementsFromArray(photosData));
-      return;
+  }
+  if (evt.target.id === FilterTypes.DISCUSSED) {
+    debounce(() => {
+      findAndRemoveAllElementsFromContainer(document, '.picture');
+      renderThumbnails(data.slice().sort(comparePhotoCommentsLength));
+    },
+    500
+    )();
 
-    case FilterTypes.DISCUSSED:
-      renderThumbnails(photosData.slice().sort(comparePhotoCommentsLength));
+  } else {
+    debounce(() => {
+      findAndRemoveAllElementsFromContainer(document, '.picture');
+      renderThumbnails(data);
+    },
+    500
+    )();
   }
 };
 
-const addThumbnailsFilterButtonsListeners = () => {
-  thumbnailsListFiltersContainer.addEventListener('click', onFilterButtonSubmit);
+const addThumbnailsFiltersListener = (cb) => {
+  thumbnailsListFiltersContainer.addEventListener('click',(evt) => onFilterButtonSubmit(evt, cb));
 };
-
-export {showThumbnailsFiltersContainer, addThumbnailsFilterButtonsListeners, onFilterButtonSubmit};
+export {showThumbnailsFiltersContainer, addThumbnailsFiltersListener};
 
