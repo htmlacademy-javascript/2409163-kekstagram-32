@@ -2,8 +2,8 @@ import {imageUploadForm} from './util';
 
 const imageUploadPreview = imageUploadForm.querySelector('img');
 const scaleControlValueInput = imageUploadForm.querySelector('.scale__control--value');
-const scaleControlSmallerButton = imageUploadForm.querySelector('.scale__control--smaller');
-const scaleControlBiggerButton = imageUploadForm.querySelector('.scale__control--bigger');
+const scaleControlZoomOutButton = imageUploadForm.querySelector('.scale__control--smaller');
+const scaleControlZoomInButton = imageUploadForm.querySelector('.scale__control--bigger');
 
 const SCALE_VALUE_MIN = 25;
 const SCALE_VALUE_MAX = 100;
@@ -24,13 +24,13 @@ const onScaleControlZoomOutButton = () => {
 };
 
 const addScaleControlButtonListeners = () => {
-  scaleControlBiggerButton.addEventListener('click', onScaleControlZoomInButton);
-  scaleControlSmallerButton.addEventListener('click', onScaleControlZoomOutButton);
+  scaleControlZoomInButton.addEventListener('click', onScaleControlZoomInButton);
+  scaleControlZoomOutButton.addEventListener('click', onScaleControlZoomOutButton);
 };
 
 const removeScaleControlButtonListeners = () => {
-  scaleControlBiggerButton.removeEventListener('click', onScaleControlZoomInButton);
-  scaleControlSmallerButton.removeEventListener('click', onScaleControlZoomOutButton);
+  scaleControlZoomInButton.removeEventListener('click', onScaleControlZoomInButton);
+  scaleControlZoomOutButton.removeEventListener('click', onScaleControlZoomOutButton);
 };
 
 export {addScaleControlButtonListeners, removeScaleControlButtonListeners};
