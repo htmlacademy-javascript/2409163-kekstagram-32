@@ -15,8 +15,8 @@ const commentField = imageUploadOverlay.querySelector('.text__description');
 const closeImageUploadForm = () => {
   imageUploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
-  formCloseButton.removeEventListener('click', closeImageUploadForm);
-  document.removeEventListener('keydown', onDocumentEscapeKeyDownForm);
+  formCloseButton.removeEventListener('click', onFormCloseButtonClick);
+  document.removeEventListener('keydown', onDocumentEscapeKeyDown);
   removeScaleControlButtonListeners();
   removeFilterListeners();
   addImageUploadControllerListener();
@@ -29,7 +29,11 @@ const closeImageUploadForm = () => {
   pristine.reset();
 };
 
-function onDocumentEscapeKeyDownForm (evt) {
+function onFormCloseButtonClick () {
+  closeImageUploadForm();
+}
+
+function onDocumentEscapeKeyDown (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     imageUploadController.addEventListener('change', onImageUploadControllerChange);
@@ -37,4 +41,4 @@ function onDocumentEscapeKeyDownForm (evt) {
   }
 }
 
-export {closeImageUploadForm, onDocumentEscapeKeyDownForm};
+export {closeImageUploadForm, onDocumentEscapeKeyDown, onFormCloseButtonClick};

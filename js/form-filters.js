@@ -66,52 +66,54 @@ const switchFilterToOriginal = () => {
 
 };
 
-const switchFilterToChrome = () => {
+const onRadioOriginalChange = () => switchFilterToOriginal();
+
+const onRadioChromeChange = () => {
   updateSliderOptions(0, 1, 1, 0.1);
   filterType = 'grayscale';
   sliderElement.noUiSlider.on('update', switchSlider);
 };
 
-const switchFilterToSepia = () => {
+const onRadioSepiaChange = () => {
   updateSliderOptions(0, 1, 1, 0.1);
   filterType = 'sepia';
   sliderElement.noUiSlider.on('update', switchSlider);
 };
 
-const switchFilterToMarvin = () => {
+const onRadioMarvinChange = () => {
   updateSliderOptions(0, 100, 100, 1);
   filterType = 'invert';
   sliderElement.noUiSlider.on('update', switchSlider);
 };
 
-const switchFilterToPhobos = () => {
+const onRadioPhobosChange = () => {
   updateSliderOptions(0, 3, 3, 0.1);
   filterType = 'blur';
   sliderElement.noUiSlider.on('update', switchSlider);
 };
 
-const switchFilterToHeat = () => {
+const onRadioHeatChange = () => {
   updateSliderOptions(1, 3, 3, 0.1);
   filterType = 'brightness';
   sliderElement.noUiSlider.on('update', switchSlider);
 };
 
 const addFilterListeners = () => {
-  radioOriginal.addEventListener('change', switchFilterToOriginal);
-  radioChrome.addEventListener('change', switchFilterToChrome);
-  radioSepia.addEventListener('change', switchFilterToSepia);
-  radioMarvin.addEventListener('change', switchFilterToMarvin);
-  radioPhobos.addEventListener('change', switchFilterToPhobos);
-  radioHeat.addEventListener('change', switchFilterToHeat);
+  radioOriginal.addEventListener('change', onRadioOriginalChange);
+  radioChrome.addEventListener('change', onRadioChromeChange);
+  radioSepia.addEventListener('change', onRadioSepiaChange);
+  radioMarvin.addEventListener('change', onRadioMarvinChange);
+  radioPhobos.addEventListener('change', onRadioPhobosChange);
+  radioHeat.addEventListener('change', onRadioHeatChange);
 };
 
 const removeFilterListeners = () => {
-  radioOriginal.removeEventListener('change', switchFilterToOriginal);
-  radioChrome.removeEventListener('change', switchFilterToChrome);
-  radioSepia.removeEventListener('change', switchFilterToSepia);
-  radioMarvin.removeEventListener('change', switchFilterToMarvin);
-  radioPhobos.removeEventListener('change', switchFilterToPhobos);
-  radioHeat.removeEventListener('change', switchFilterToHeat);
+  radioOriginal.removeEventListener('change', onRadioOriginalChange);
+  radioChrome.removeEventListener('change', onRadioChromeChange);
+  radioSepia.removeEventListener('change', onRadioSepiaChange);
+  radioMarvin.removeEventListener('change', onRadioMarvinChange);
+  radioPhobos.removeEventListener('change', onRadioPhobosChange);
+  radioHeat.removeEventListener('change', onRadioHeatChange);
 };
 
 export {addFilterListeners, removeFilterListeners, SCALE_VALUE_DEFAULT, switchFilterToOriginal};

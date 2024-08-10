@@ -1,5 +1,5 @@
 import {body, thumbnailsContainer} from './util.js';
-import {closeBigPicture, onDocumentEscapeKeyDown} from './big-picture-close.js';
+import {onBigPictureCloseButtonClick, onDocumentEscapeKeyDown} from './big-picture-close.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImage = bigPicture.querySelector('img');
@@ -13,20 +13,30 @@ const socialCommentsBlock = bigPicture.querySelector('.social__comments');
 
 const COMMENTS_TO_RENDER_BY_DEFAULT = 5;
 
+const commentFragment = document.createDocumentFragment();
 
 const insertCommentsToContainer = (item, amount, container) => {
   for (let i = 0; i < amount; i++) {
-    container.insertAdjacentHTML('beforeend', `
-      <li class="social__comment">
-        <img
-          class="social__picture"
-          src="${item.comments[i].avatar}"
-          alt="${item.comments[i].name}"
-          width="35" height="35">
-        <p class="social__text">${item.comments[i].message}</p>
-      </li>
-    `);
+    const socialComment = document.createElement('li');
+    socialComment.classList.add('social__comment');
+
+    const socialPicture = document.createElement('img');
+    socialPicture.classList.add('social__picture');
+    socialPicture.src = `${item.comments[i].avatar}`;
+    socialPicture.alt = `${item.comments[i].name}`;
+    socialPicture.width = 35;
+    socialPicture.height = 35;
+
+    const socialText = document.createElement('p');
+    socialText.classList.add('social__text');
+    socialText.textContent = `${item.comments[i].message}`;
+
+    socialComment.appendChild(socialPicture);
+    socialComment.appendChild(socialText);
+
+    commentFragment.appendChild(socialComment);
   }
+  container.appendChild(commentFragment);
 };
 
 const renderCommentsFromData = (data) => {
@@ -63,7 +73,7 @@ const onThumbnailsClick = (evt, data) => {
     bigPictureDescription.textContent = evt.target.alt;
     socialCommentsBlock.innerHTML = '';
     renderCommentsFromData(data);
-    BigPictureCloseButton.addEventListener('click', closeBigPicture);
+    BigPictureCloseButton.addEventListener('click', onBigPictureCloseButtonClick);
     document.addEventListener('keydown', onDocumentEscapeKeyDown);
   }
 };

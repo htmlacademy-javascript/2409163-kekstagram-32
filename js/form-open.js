@@ -1,7 +1,7 @@
-import {body, imageUploadForm, ignoreEscape} from './util.js';
+import {body, imageUploadForm, onTextAreaEscapeKeyDown} from './util.js';
 import {addScaleControlButtonListeners} from './form-scale-controller';
 import {addFilterListeners, switchFilterToOriginal} from './form-filters.js';
-import {closeImageUploadForm, onDocumentEscapeKeyDownForm} from './form-close.js';
+import {onDocumentEscapeKeyDown, onFormCloseButtonClick} from './form-close.js';
 import {addFormSubmitListener} from './form-validation-submit.js';
 
 const imageUploadPreview = imageUploadForm.querySelector('img');
@@ -32,12 +32,12 @@ const onImageUploadControllerChange = () => {
   body.classList.add('modal-open');
   imageUploadOverlay.classList.remove('hidden');
   renderImagePreview();
-  document.addEventListener('keydown', onDocumentEscapeKeyDownForm);
-  formCloseButton.addEventListener('click', closeImageUploadForm);
+  document.addEventListener('keydown', onDocumentEscapeKeyDown);
+  formCloseButton.addEventListener('click', onFormCloseButtonClick);
   imageUploadController.removeEventListener('change', onImageUploadControllerChange);
   switchFilterToOriginal();
-  hashtagField.addEventListener('keydown', ignoreEscape);
-  commentField.addEventListener('keydown', ignoreEscape);
+  hashtagField.addEventListener('keydown', onTextAreaEscapeKeyDown);
+  commentField.addEventListener('keydown', onTextAreaEscapeKeyDown);
   addScaleControlButtonListeners();
   addFilterListeners();
   addFormSubmitListener();

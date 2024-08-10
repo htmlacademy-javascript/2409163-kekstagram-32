@@ -2,15 +2,11 @@ import {body, debounce, findAndRemoveAllElementsFromContainer, generateRandomTen
 import {renderThumbnails} from './thumbnails-render.js';
 
 const DEBOUNCE_TIME = 500;
-const thumbnailsListFiltersContainer = body.querySelector('.img-filters');
 
+const thumbnailsListFiltersContainer = body.querySelector('.img-filters');
 const buttonDefault = thumbnailsListFiltersContainer.querySelector('#filter-default');
 const buttonRandomTen = thumbnailsListFiltersContainer.querySelector('#filter-random');
 const buttonDiscussed = thumbnailsListFiltersContainer.querySelector('#filter-discussed');
-
-const showThumbnailsFiltersContainer = () => {
-  thumbnailsListFiltersContainer.classList.remove('img-filters--inactive');
-};
 
 const comparePhotoCommentsLength = (photoA, photoB) => photoB.comments.length - photoA.comments.length;
 
@@ -34,23 +30,31 @@ const filterThumbnails = (button, data) => {
   }
 };
 
+const filterThumbnailsDebounce = debounce(filterThumbnails, DEBOUNCE_TIME);
+
+const onButtonDefaultClick = (data) => {
+  changeActiveButton(buttonDefault);
+  filterThumbnailsDebounce(buttonDefault, data);
+};
+
+const onButtonRandomTenClick = (data) => {
+  changeActiveButton(buttonRandomTen);
+  filterThumbnailsDebounce(buttonRandomTen, data);
+};
+
+const onButtonDiscussedClick = (data) => {
+  changeActiveButton(buttonDiscussed);
+  filterThumbnailsDebounce(buttonDiscussed, data);
+};
+
 const addThumbnailsFiltersListeners = (data) => {
-  const filterThumbnailsDebounce = debounce(filterThumbnails, DEBOUNCE_TIME);
-  buttonDefault.addEventListener('click', () => {
-    changeActiveButton(buttonDefault);
-    filterThumbnailsDebounce.call(this, buttonDefault, data);
-  });
+  buttonDefault.addEventListener('click', () => onButtonDefaultClick(data));
+  buttonRandomTen.addEventListener('click', () => onButtonRandomTenClick (data));
+  buttonDiscussed.addEventListener('click', () => onButtonDiscussedClick (data));
+};
 
-  buttonRandomTen.addEventListener('click', () => {
-    changeActiveButton(buttonRandomTen);
-    filterThumbnailsDebounce.call(this, buttonRandomTen, data);
-  });
-
-  buttonDiscussed.addEventListener('click', () => {
-    changeActiveButton(buttonDiscussed);
-    filterThumbnailsDebounce.call(this, buttonDiscussed, data);
-  });
+const showThumbnailsFiltersContainer = () => {
+  thumbnailsListFiltersContainer.classList.remove('img-filters--inactive');
 };
 
 export {showThumbnailsFiltersContainer, addThumbnailsFiltersListeners};
-

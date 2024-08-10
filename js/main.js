@@ -1,5 +1,5 @@
 import {addImageUploadControllerListener} from './form-open.js';
-import {getData} from './server_api.js';
+import {getData} from './server-api.js';
 import {renderThumbnails} from './thumbnails-render.js';
 import {addCommentLoaderListener, addThumbnailsListener} from './big-picture-open.js';
 import {addThumbnailsFiltersListeners, showThumbnailsFiltersContainer} from './thumbnails-sort-filter.js';
