@@ -1,6 +1,6 @@
 import {closeImageUploadForm} from './form-close';
 import {showErrorAlert, showSuccessAlert} from './form-validation-alerts.js';
-import {sendData} from './server_api';
+import {sendData} from './server-api';
 import {blockSubmitButton, imageUploadForm, transformStringToArray, unblockSubmitButton} from './util';
 
 const MAX_HASHTAG_NUMBER = 5;
@@ -16,8 +16,8 @@ const hashtagField = imageUploadForm.querySelector('.text__hashtags');
 const hasValidPattern = (inputValue) => transformStringToArray(inputValue).every((hashtag) => HASHTAG_REG_EXP_VALIDATION.test(hashtag));
 const hasValidNumber = (inputValue) => transformStringToArray(inputValue).length <= MAX_HASHTAG_NUMBER;
 const hasUniqueTags = (inputValue) => {
-  const lowerCaseArray = transformStringToArray(inputValue).map((tag) => tag.toLowerCase());
-  return lowerCaseArray.length === new Set(lowerCaseArray).size;
+  const hashtagsWithLowerCase = transformStringToArray(inputValue).map((tag) => tag.toLowerCase());
+  return hashtagsWithLowerCase.length === new Set(hashtagsWithLowerCase).size;
 };
 
 const pristine = new Pristine(imageUploadForm, {
