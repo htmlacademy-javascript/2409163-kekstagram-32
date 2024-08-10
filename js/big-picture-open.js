@@ -35,8 +35,8 @@ const insertCommentsToContainer = (item, amount, container) => {
     socialComment.appendChild(socialText);
 
     commentFragment.appendChild(socialComment);
-    container.appendChild(commentFragment);
   }
+  container.appendChild(commentFragment);
 };
 
 const renderCommentsFromData = (data) => {
