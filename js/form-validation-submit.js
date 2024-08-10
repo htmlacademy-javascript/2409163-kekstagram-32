@@ -16,8 +16,8 @@ const hashtagField = imageUploadForm.querySelector('.text__hashtags');
 const hasValidPattern = (inputValue) => transformStringToArray(inputValue).every((hashtag) => HASHTAG_REG_EXP_VALIDATION.test(hashtag));
 const hasValidNumber = (inputValue) => transformStringToArray(inputValue).length <= MAX_HASHTAG_NUMBER;
 const hasUniqueTags = (inputValue) => {
-  const tagsLowerCase = transformStringToArray(inputValue).map((tag) => tag.toLowerCase());
-  return tagsLowerCase.length === new Set(tagsLowerCase).size;
+  const hashtagsWithLowerCase = transformStringToArray(inputValue).map((tag) => tag.toLowerCase());
+  return hashtagsWithLowerCase.length === new Set(hashtagsWithLowerCase).size;
 };
 
 const pristine = new Pristine(imageUploadForm, {
