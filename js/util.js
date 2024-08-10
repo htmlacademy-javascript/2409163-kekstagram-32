@@ -61,7 +61,7 @@ const transformStringToArray = (string) => string
   .split(' ')
   .filter((tag) => Boolean(tag.length));
 
-const ignoreEscape = (evt) => {
+const onTextAreaEscapeKeyDown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
   }
@@ -91,4 +91,4 @@ const debounce = (callback, timeoutDelay) => {
   };
 };
 
-export {body, thumbnailsContainer, imageUploadForm, generateArray, getRandomInteger, getRandomArrayElement, isEscapeKey, transformStringToArray, blockSubmitButton, unblockSubmitButton, ignoreEscape, showErrorDataMessage, debounce, generateRandomTenElementsFromArray, findAndRemoveAllElementsFromContainer};
+export {body, thumbnailsContainer, imageUploadForm, generateArray, getRandomInteger, getRandomArrayElement, isEscapeKey, transformStringToArray, blockSubmitButton, unblockSubmitButton, onTextAreaEscapeKeyDown, showErrorDataMessage, debounce, generateRandomTenElementsFromArray, findAndRemoveAllElementsFromContainer};

@@ -1,5 +1,5 @@
 import {body, thumbnailsContainer} from './util.js';
-import {closeBigPicture, onDocumentEscapeKeyDown} from './big-picture-close.js';
+import {onBigPictureCloseButtonClick, onDocumentEscapeKeyDown} from './big-picture-close.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImage = bigPicture.querySelector('img');
@@ -63,7 +63,7 @@ const onThumbnailsClick = (evt, data) => {
     bigPictureDescription.textContent = evt.target.alt;
     socialCommentsBlock.innerHTML = '';
     renderCommentsFromData(data);
-    BigPictureCloseButton.addEventListener('click', closeBigPicture);
+    BigPictureCloseButton.addEventListener('click', onBigPictureCloseButtonClick);
     document.addEventListener('keydown', onDocumentEscapeKeyDown);
   }
 };

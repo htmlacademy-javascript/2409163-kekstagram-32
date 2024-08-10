@@ -1,5 +1,5 @@
 import {body, imageUploadForm, isEscapeKey} from './util';
-import {closeImageUploadForm, onDocumentEscapeKeyDownForm} from './form-close';
+import {onDocumentEscapeKeyDown, onFormCloseButtonClick} from './form-close';
 
 const formCloseButton = imageUploadForm.querySelector('.img-upload__cancel');
 
@@ -9,58 +9,59 @@ const successMessage = document.querySelector('#success').content.querySelector(
 const successButton = successMessage.querySelector('.success__button');
 
 const removeErrorAlert = () => {
-  body.removeChild(errorMessage);
-  errorButton.removeEventListener('click', removeErrorAlert);
-  document.removeEventListener('keydown',onDocumentEscapeKeyDownErrorAlert);
-  document.removeEventListener('click', onErrorMessageClickOutside);
-  document.addEventListener('keydown', onDocumentEscapeKeyDownForm);
-  formCloseButton.addEventListener('click', closeImageUploadForm);
+  document.addEventListener('keydown', onDocumentEscapeKeyDown);
+  errorMessage.remove();
+  errorButton.removeEventListener('click', onErrorButtonClick);
+  window.removeEventListener('keydown',onWindowEscapeKeyDown);
+  window.removeEventListener('click', onDocumentClick);
+  formCloseButton.addEventListener('click', onFormCloseButtonClick);
 };
 
 const showErrorAlert = () => {
-  errorButton.addEventListener('click', removeErrorAlert);
-  document.addEventListener('keydown',onDocumentEscapeKeyDownErrorAlert);
-  document.addEventListener('click', onErrorMessageClickOutside);
+  document.removeEventListener('keydown', onDocumentEscapeKeyDown);
+  errorButton.addEventListener('click', onErrorButtonClick);
+  window.addEventListener('keydown',onWindowEscapeKeyDown);
+  document.addEventListener('click', onDocumentClick);
   body.appendChild(errorMessage);
-  formCloseButton.removeEventListener('click', closeImageUploadForm);
-  document.removeEventListener('keydown', onDocumentEscapeKeyDownForm);
+  formCloseButton.removeEventListener('click', onFormCloseButtonClick);
 };
 
 const removeSuccessAlert = () => {
-  body.removeChild(successMessage);
-  successButton.removeEventListener('click', removeSuccessAlert);
-  document.removeEventListener('keydown',onDocumentEscapeKeyDownSuccessAlert);
-  document.removeEventListener('click', onSuccessMessageClickOutside);
+  successMessage.remove();
+  successButton.removeEventListener('click', onSuccesButtonClick);
+  window.removeEventListener('keydown',onWindowEscapeKeyDown);
+  window.removeEventListener('click', onDocumentClick);
 };
 
 const showSuccessAlert = () => {
-  successButton.addEventListener('click', removeSuccessAlert);
-  document.addEventListener('keydown',onDocumentEscapeKeyDownSuccessAlert);
-  document.addEventListener('click', onSuccessMessageClickOutside);
+  successButton.addEventListener('click', onSuccesButtonClick);
+  window.addEventListener('keydown',onWindowEscapeKeyDown);
+  document.addEventListener('click', onDocumentClick);
   body.appendChild(successMessage);
 };
 
-function onDocumentEscapeKeyDownErrorAlert (evt) {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    removeErrorAlert();
-  }
-}
-function onErrorMessageClickOutside (evt) {
-  if (!evt.target.matches('.error__inner') && !evt.target.matches('.error__title')) {
-    evt.preventDefault();
-    removeErrorAlert();
-  }
+function onErrorButtonClick () {
+  removeErrorAlert();
 }
 
-function onDocumentEscapeKeyDownSuccessAlert (evt) {
+function onSuccesButtonClick () {
+  removeSuccessAlert();
+}
+
+function onWindowEscapeKeyDown (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
+    removeErrorAlert();
     removeSuccessAlert();
   }
 }
 
-function onSuccessMessageClickOutside (evt) {
+function onDocumentClick (evt) {
+  if (!evt.target.matches('.error__inner') && !evt.target.matches('.error__title')) {
+    evt.preventDefault();
+    removeErrorAlert();
+  }
+
   if (!evt.target.matches('.success__inner') && !evt.target.matches('.success__title')) {
     evt.preventDefault();
     removeSuccessAlert();

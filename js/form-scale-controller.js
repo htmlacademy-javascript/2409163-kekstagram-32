@@ -9,14 +9,14 @@ const SCALE_VALUE_MIN = 25;
 const SCALE_VALUE_MAX = 100;
 const SCALE_VALUE_STEP = 25;
 
-const zoomInImage = () => {
+const onScaleControlZoomInButton = () => {
   if (parseFloat(scaleControlValueInput.value) < SCALE_VALUE_MAX) {
     scaleControlValueInput.value = `${parseFloat(scaleControlValueInput.value) + SCALE_VALUE_STEP}%`;
     imageUploadPreview.style.transform = `scale(${parseFloat(scaleControlValueInput.value) / 100})`;
   }
 };
 
-const zoomOutImage = () => {
+const onScaleControlZoomOutButton = () => {
   if (parseFloat(scaleControlValueInput.value) > SCALE_VALUE_MIN) {
     scaleControlValueInput.value = `${parseFloat(scaleControlValueInput.value) - SCALE_VALUE_STEP}%`;
     imageUploadPreview.style.transform = `scale(${parseFloat(scaleControlValueInput.value) / 100})`;
@@ -24,13 +24,13 @@ const zoomOutImage = () => {
 };
 
 const addScaleControlButtonListeners = () => {
-  scaleControlBiggerButton.addEventListener('click', zoomInImage);
-  scaleControlSmallerButton.addEventListener('click', zoomOutImage);
+  scaleControlBiggerButton.addEventListener('click', onScaleControlZoomInButton);
+  scaleControlSmallerButton.addEventListener('click', onScaleControlZoomOutButton);
 };
 
 const removeScaleControlButtonListeners = () => {
-  scaleControlBiggerButton.removeEventListener('click', zoomInImage);
-  scaleControlSmallerButton.removeEventListener('click', zoomOutImage);
+  scaleControlBiggerButton.removeEventListener('click', onScaleControlZoomInButton);
+  scaleControlSmallerButton.removeEventListener('click', onScaleControlZoomOutButton);
 };
 
 export {addScaleControlButtonListeners, removeScaleControlButtonListeners};

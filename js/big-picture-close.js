@@ -7,7 +7,7 @@ const socialCommentsBlock = bigPicture.querySelector('.social__comments');
 
 const closeBigPicture = () => {
   bigPicture.classList.add('hidden');
-  BigPictureCloseButton.removeEventListener('click', closeBigPicture);
+  BigPictureCloseButton.removeEventListener('click', onBigPictureCloseButtonClick);
   document.removeEventListener('keydown', onDocumentEscapeKeyDown);
   body.classList.remove('modal-open');
   socialCommentsBlock.innerHTML = '';
@@ -22,4 +22,8 @@ function onDocumentEscapeKeyDown (evt) {
   }
 }
 
-export {closeBigPicture, onDocumentEscapeKeyDown};
+function onBigPictureCloseButtonClick () {
+  closeBigPicture();
+}
+
+export {onBigPictureCloseButtonClick, onDocumentEscapeKeyDown};
